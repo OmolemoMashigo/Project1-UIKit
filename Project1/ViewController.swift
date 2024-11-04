@@ -10,6 +10,7 @@ import UIKit
 class ViewController: UITableViewController {
 
     var pictures = [String]()
+    var sortedPictures = [String]()
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -26,7 +27,8 @@ class ViewController: UITableViewController {
             }
         }
         
-        print(pictures)
+        sortedPictures = pictures.sorted()
+        print(sortedPictures)
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -35,13 +37,15 @@ class ViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Picture", for: indexPath)
-        cell.textLabel?.text = pictures[indexPath.row]
+        cell.textLabel?.text = sortedPictures[indexPath.row]
         return cell
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if let vc = storyboard?.instantiateViewController(withIdentifier: "Details") as? DetailsViewController {
+            vc.title = "Picture \(indexPath.row + 1) of \(pictures.count)"
             vc.selectedImage = pictures[indexPath.row]
+            
             navigationController?.pushViewController(vc, animated: true)
         }
     }
